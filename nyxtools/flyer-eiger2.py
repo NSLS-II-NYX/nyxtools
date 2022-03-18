@@ -1,13 +1,7 @@
-# import getpass
-# import grp
 import logging
 
-# import os
 import time as ttime
-from collections import deque
 
-import fabio
-from event_model import compose_resource
 from mxtools.flyer import MXFlyer
 from ophyd.sim import NullStatus
 from ophyd.status import SubscriptionStatus
