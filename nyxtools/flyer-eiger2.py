@@ -1,5 +1,4 @@
 import logging
-
 import time as ttime
 
 from mxtools.flyer import MXFlyer
@@ -41,13 +40,17 @@ class NYXEiger2Flyer(MXFlyer):
             logger.debug(f"DETECTOR status {old_value} -> {value}")
             # if old_value == "Acquiring" and value == "Done":
             if old_value == 1 and value == 0:
-                logger.debug(f"DETECTOR status successfully changed {old_value} -> {value}")
+                logger.debug(
+                    f"DETECTOR status successfully changed {old_value} -> {value}"
+                )
                 return True
             else:
                 logger.debug(f"DETECTOR status changing {old_value} -> {value}...")
                 return False
 
-        st_detector = SubscriptionStatus(self.detector.cam.acquire, detector_callback, run=True)
+        st_detector = SubscriptionStatus(
+            self.detector.cam.acquire, detector_callback, run=True
+        )
 
         return st_vector & st_detector
 
