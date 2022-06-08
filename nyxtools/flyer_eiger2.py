@@ -19,6 +19,7 @@ class NYXEiger2Flyer(MXFlyer):
         return st
 
     def update_parameters(self, **kwargs):
+        kwargs["det_distance_m"] /= 1000
         super().update_parameters(**kwargs)
         self.zebra.pc.arm_signal.put(1)
         ttime.sleep(1)
@@ -42,7 +43,6 @@ class NYXEiger2Flyer(MXFlyer):
 
     def detector_arm(self, **kwargs):
         logger.debug("flyer detector arm")
-        kwargs["det_distance_m"] /= 1000
         super().detector_arm(**kwargs)
         logger.debug("flyer detector arm done")
 
