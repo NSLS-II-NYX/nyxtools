@@ -20,8 +20,15 @@ class NYXEiger2Flyer(MXFlyer):
 
     def update_parameters(self, **kwargs):
         super().update_parameters(**kwargs)
+
+        def armed_callback(value, old_value, **kwargs):
+            if old_value == 0 and value == 1:
+                return True
+            return False
+
+        zebra_status = SubscriptionStatus(self.zebra.pc.arm.output, armed_callback, run=False)
         self.zebra.pc.arm_signal.put(1)
-        ttime.sleep(1)
+        zebra_status.wait()
 
     def complete(self):
         def callback_motion(value, old_value, **kwargs):
@@ -42,11 +49,6 @@ class NYXEiger2Flyer(MXFlyer):
         # as an alternative, consider using self.zebra.download_status as the zebra should
         # finish after the vector has finished its movement.
         return zebra_status
-
-    def detector_arm(self, **kwargs):
-        logger.debug("flyer detector arm")
-        super().detector_arm(**kwargs)
-        logger.debug("flyer detector arm done")
 
     def configure_vector(self, **kwargs):
         logger.debug("configuring vector")
